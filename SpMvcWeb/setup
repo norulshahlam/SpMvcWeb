@@ -1,0 +1,129 @@
+/*
+this project is creating website usng spring mvc. this project basically has 
+1.feedback form to fill up, and at the backend it
+2.  saves this feedback data to database and 
+3. also retrieve it
+4. has question form u can input, 
+5. then save 
+6. and retrives all and
+7. random 5
+8. use json as output data. using jackson in pom.xml
+9. do test from 5 random q,
+10. check if answers given from test q is correct. 
+for db we using mysql and hibernate.
+ 
+
+MYSQL
+
+create database website;
+use website;
+create table feedback (
+name varchar(30), email varchar(30),
+msg varchar(10000), reg varchar(100), 
+code varchar(10), rating int);
+
+create table Question (
+qid int, question varchar(50), opt1 varchar(50), 
+opt2 varchar(50), opt3 varchar(50),
+ opt4 varchar(50), answer varchar(50));
+ 
+insert into Question values (1, 'my name?', 'shah', 'lam', 'nor', 'rul', '1');
+insert into Question values (2, 'my food?', 'chix', 'fish', 'beef', 'ham', '2');
+insert into Question values (3, 'coding language', 'java', 'python', 'ruby', '.net', '3');
+insert into Question values (4, 'wife name', 'cindy', 'roger', 'rabbit', 'lucy', '3');
+insert into Question values (5, 'my hobby', 'gym', 'sleep', 'skate', 'sleep', '4');
+insert into Question values (6, 'my name?6', 'shah6', 'lam6', 'nor6', 'rul6', '3');
+insert into Question values (7, 'my name?7', 'shah7', 'lam7', 'nor7', 'rul7', '2');
+insert into Question values (8, 'my name?8', 'shah8', 'lam8', 'nor8', 'rul8', '1');
+insert into Question values (9, 'my name?9', 'shah9', 'lam9', 'nor9', 'rul9', '4');
+insert into Question values (10, 'my name?10', 'shah10', 'lam10', 'nor10', 'rul10', '1');
+select * from question;
+
+insert into feedback values (
+'shah', 'norulshahlam@gmail.com', 'great website!', 3, 'lti3923', 4);
+select * from feedback;
+
+insert into feedback values (
+'shah', 'norulshahlam@gmail.com', 'great website!', 3, 'lti3923', 4);
+
+
+-use dependencies for spring-webmvc in pom.xml
+
+in web/xml
+-create spring DispatcherServlet in web.xml to 
+direct all requests to a dispatcher servlet.
+this servlet is of beans config file
+map the servlet and give a name {'mapped name' - servlet}
+hence u will create this servlet with the name shah-servlet.xml
+
+in shah-servlvet.xml
+-make u have beans, context, and mvc config
+-set the component-scan to your main package eg com.shah
+
+in java folder
+-create a src/main/java folder where all class will be inside
+package for entity, dao, controller. in this order. 
+-controller is for receiving requests;
+-entity is the variables; use @Entity & @Id, pojo.
+-dao is the database settings
+
+in controller package
+-use @Controller to make a class into controller class
+
+in entity
+-make feedback.class having all the variables in the feedback form. make sure all variable
+-[ERROR] names has same name as column name in db.
+
+@ModelAttribute is where u can fetch all data from the form submitted in jsp
+and insert into the object, all within the parameter. 
+since this obj created has no parameter,
+a default constructor must be create as well
+
+DEPENDENCIES
+dependencies for hibernate
+since we are using spring mvc, we have to use dependdencies for spring orm
+[ERROR]make sure spring orm & mvc & tx version is same & use 4.3.7. then use this same version in shah-servlet beans config
+dependencies for mysql connector, make sure version is same as your mysql server
+C3P0 - jdbc connection pooling
+spring transaction
+
+add spring tx config & jdbc/hibernate config in shah-sevlet.xml
+add transaction manager config in servlet.xml. ask hibernate to transact instead of user
+add annotation-driven config 
+
+QUESTION.
+there will be page where user can enter own questions with 4 options and the answer. the answer will be given by 1/2/3/4, depending on where the answer is at the options 
+then the 5 q&a taken by user will be stored as object and go to verify() to check for correct answers
+class will be made for this object
+in verify(), to check for the correct answers, a simply query will be done. by using a simple query using qid and ans. suppose for qid=1, ans is 3.
+executing this query will return 1 result. else null. this will be stored in q. query is stored in 'sql'. this query will be repeated 5 times using for loop.
+checking of asnwers will be done in db to save memory and bandwidth
+
+ISSUES
+
+1. this method auto adds value everytime add question is called.
+
+@RequestMapping("saveQuestion.htm")
+		public ModelAndView saveQuestion(@ModelAttribute Question q)
+		{
+			
+			ModelAndView mv = new ModelAndView("printQuestions.jsp");
+			qDao.saveQuestion(q);
+			return mv;
+		}
+because once saveQuestion.htm is called, it will call the form page and save the q without having to press submit in the form. this method should be seperated, 
+method to called to page, and another method to receive the form as below:
+
+	@RequestMapping("addQuestion.htm")
+	public String question() {
+	
+		return "question.jsp";
+	}
+	
+	@RequestMapping("saveQuestion.htm")
+	public String saveQuestion (@ModelAttribute Question q) {
+		
+		qDao.saveQuestion(q); 
+		return "question.jsp";
+	}
+*/
